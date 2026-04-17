@@ -11,6 +11,12 @@ export function useTimer(onFinish) {
   const [status, setStatus] = useState('idle');            // idle | running | paused | finished
   const intervalRef = useRef(null);
   const endTimeRef = useRef(null);
+  const onFinishRef = useRef(onFinish);
+
+  // Keep ref in sync so tick always calls the latest callback
+  useEffect(() => {
+    onFinishRef.current = onFinish;
+  }, [onFinish]);
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -25,11 +31,11 @@ export function useTimer(onFinish) {
       setRemaining(0);
       setStatus('finished');
       clearTimer();
-      onFinish?.();
+      onFinishRef.current?.();
     } else {
       setRemaining(left);
     }
-  }, [clearTimer, onFinish]);
+  }, [clearTimer]);
 
   const start = useCallback((seconds) => {
     clearTimer();

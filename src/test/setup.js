@@ -5,6 +5,7 @@ import { afterEach, vi } from 'vitest';
 // Cleanup after each test
 afterEach(() => {
   cleanup();
+  localStorage.clear();
 });
 
 class MockAudioContext {
