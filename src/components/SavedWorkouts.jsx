@@ -1,3 +1,6 @@
+import { useState, useCallback } from 'react';
+import ConfirmModal from './ConfirmModal';
+
 function formatDuration(seconds) {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -15,6 +18,23 @@ function totalTime(exercises, cycles) {
  * Displays saved workouts as cards with load and delete actions.
  */
 export default function SavedWorkouts({ workouts, onLoad, onDelete }) {
+  const [deleteTarget, setDeleteTarget] = useState(null); // workout to confirm deletion
+
+  const handleRequestDelete = useCallback((workout) => {
+    setDeleteTarget(workout);
+  }, []);
+
+  const handleConfirmDelete = useCallback(() => {
+    if (deleteTarget) {
+      onDelete(deleteTarget.id);
+      setDeleteTarget(null);
+    }
+  }, [deleteTarget, onDelete]);
+
+  const handleCancelDelete = useCallback(() => {
+    setDeleteTarget(null);
+  }, []);
+
   if (workouts.length === 0) return null;
 
   return (
@@ -55,10 +75,9 @@ export default function SavedWorkouts({ workouts, onLoad, onDelete }) {
             </button>
 
             <button
-              onClick={() => onDelete(w.id)}
+              onClick={() => handleRequestDelete(w)}
               aria-label={`Excluir ${w.name}`}
               className="
-                opacity-0 group-hover:opacity-100
                 text-text-muted hover:text-accent-rose
                 transition-all duration-200 cursor-pointer text-lg leading-none
               "
@@ -68,6 +87,21 @@ export default function SavedWorkouts({ workouts, onLoad, onDelete }) {
           </div>
         ))}
       </div>
+
+      {/* Confirmation modal */}
+      <ConfirmModal
+        open={deleteTarget !== null}
+        title="Excluir treino"
+        message={
+          deleteTarget
+            ? `Tem certeza que deseja excluir "${deleteTarget.name}"? Esta ação não pode ser desfeita.`
+            : ''
+        }
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </div>
   );
 }
