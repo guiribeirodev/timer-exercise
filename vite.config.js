@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/timer-exercise/',
+  base: process.env.ELECTRON ? './' : '/timer-exercise/',
   plugins: [react(), tailwindcss()],
   test: {
     globals: true,

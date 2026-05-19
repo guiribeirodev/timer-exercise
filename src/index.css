@@ -24,6 +24,11 @@
 body {
   @apply bg-bg-primary text-text-primary font-sans antialiased;
   min-height: 100dvh;
+  user-select: none; /* Disable text selection for native app feel */
+}
+
+input, textarea {
+  user-select: text; /* Allow input text selection */
 }
 
 #root {
