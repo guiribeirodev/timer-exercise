@@ -31,11 +31,15 @@ Temporizador para exercícios físicos com uma interface moderna e responsiva, c
 - **React 19** — Biblioteca para construção da interface
 - **Vite** — Ferramenta de build ultrarrápida
 - **Tailwind CSS 4** — Estilização com classes utilitárias
+- **Electron** — Plataforma para desenvolvimento de aplicativos desktop nativos usando tecnologias web
+- **Electron Builder** — Empacotador e compilador de instaladores para macOS, Windows e Linux
 - **Vitest** — Framework de testes unitários
 - **Testing Library** — Testes com foco na experiência do usuário
 - **GitHub Actions** — Deploy automático no GitHub Pages
 
 ## 🚀 Rodando Localmente
+
+### Versão Web
 
 ```bash
 # Clone o repositório
@@ -51,6 +55,14 @@ npm run dev
 
 O app estará disponível em `http://localhost:5173/`.
 
+### Versão Desktop (Electron)
+
+Para rodar a aplicação como um aplicativo desktop em modo de desenvolvimento com Hot Reload:
+
+```bash
+npm run electron:dev
+```
+
 ## 🧪 Testes
 
 ```bash
@@ -61,35 +73,50 @@ npm run test
 npm run test:watch
 ```
 
-## 📦 Build para Produção
+## 📦 Build e Empacotamento
+
+### Compilar para a Web
 
 ```bash
 npm run build
 ```
 
-Os arquivos otimizados serão gerados na pasta `dist/`.
+Os arquivos estáticos otimizados serão gerados na pasta `dist/`.
+
+### Compilar para Desktop (Electron)
+
+Para empacotar a aplicação e gerar instaladores nativos completos (`.AppImage` e `.deb` para Linux, além de suporte para Windows e macOS):
+
+```bash
+npm run electron:build
+```
+
+Os instaladores compilados e executáveis finais serão gerados na pasta `dist-electron/`.
 
 ## 📁 Estrutura do Projeto
 
 ```
-src/
-├── components/
-│   ├── ConfirmModal.jsx    # Modal de confirmação reutilizável
-│   ├── ModeTabs.jsx        # Abas Timer / Ciclo de Exercícios
-│   ├── SavedWorkouts.jsx   # Lista de treinos salvos
-│   ├── TimePicker.jsx      # Seletor de tempo (presets + manual)
-│   ├── TimerControls.jsx   # Botões pausar / retomar / resetar
-│   ├── TimerDisplay.jsx    # Exibição do tempo restante
-│   ├── TimerRing.jsx       # Anel animado de progresso
-│   ├── WorkoutBuilder.jsx  # Construtor de treino em ciclos
-│   └── WorkoutRunner.jsx   # Execução do treino em ciclos
-├── hooks/
-│   ├── useAlarmSound.js    # Som de alarme ao finalizar
-│   ├── useCycleTimer.js    # Lógica do timer de ciclos
-│   ├── useSavedWorkouts.js # CRUD de treinos no localStorage
-│   └── useTimer.js         # Lógica do timer simples
-├── test/                   # Testes unitários
-├── App.jsx                 # Componente raiz
-├── index.css               # Estilos globais e tema
-└── main.jsx                # Ponto de entrada
+├── electron/
+│   ├── main.js             # Processo principal do Electron (janela desktop)
+│   └── preload.js          # Script de preload seguro (Context Bridge)
+├── src/
+│   ├── components/
+│   │   ├── ConfirmModal.jsx    # Modal de confirmação reutilizável
+│   │   ├── ModeTabs.jsx        # Abas Timer / Ciclo de Exercícios
+│   │   ├── SavedWorkouts.jsx   # Lista de treinos salvos
+│   │   ├── TimePicker.jsx      # Seletor de tempo (presets + manual)
+│   │   ├── TimerControls.jsx   # Botões pausar / retomar / resetar
+│   │   ├── TimerDisplay.jsx    # Exibição do tempo restante
+│   │   ├── TimerRing.jsx       # Anel animado de progresso
+│   │   ├── WorkoutBuilder.jsx  # Construtor de treino em ciclos
+│   │   └── WorkoutRunner.jsx   # Execução do treino em ciclos
+│   ├── hooks/
+│   │   ├── useAlarmSound.js    # Som de alarme ao finalizar
+│   │   ├── useCycleTimer.js    # Lógica do timer de ciclos
+│   │   ├── useSavedWorkouts.js # CRUD de treinos no localStorage
+│   │   └── useTimer.js         # Lógica do timer simples
+│   ├── test/                   # Testes unitários
+│   ├── App.jsx                 # Componente raiz
+│   ├── index.css               # Estilos globais e tema
+│   └── main.jsx                # Ponto de entrada
 ```
